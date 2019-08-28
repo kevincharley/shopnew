@@ -2,7 +2,7 @@ var express = require('express')
 const router = express.Router();
 const path = require('path')
 var mongoose = require('mongoose')
-router.use(express.static(path.join(__dirname,"/public")))
+
 var multer = require('multer');
 var storage =   multer.diskStorage({  
     destination: (req, file, callback)=>{  
@@ -25,7 +25,7 @@ var storage =   multer.diskStorage({
       console.log("database connected")
   });
 
-
+  router.use(express.static(path.join(__dirname,"/public")))
 
 
 
@@ -44,7 +44,7 @@ router.get("/view/:img",function(req,res){
 
 
 router.get("/addproduct",function(req,res){
-    res.render("add",{nav:[{link:"/",title:"Home"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}]});
+    res.render("add",{nav:[{link:"/",title:"Home"},{link:"/prod",title:" Products"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}]});
 })
 
 router.post("/addproduct",upload,function(req,res){
@@ -65,7 +65,7 @@ p.save(function(err){
 router.get("/updateproduct",function(req,res){
     products.find({},function(err,result){
         
-        res.render("update",{nav:[{link:"/",title:"Home"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});
+        res.render("update",{nav:[{link:"/",title:"Home"},{link:"/prod",title:" Products"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});
     });
 })
 
@@ -74,7 +74,7 @@ router.get("/updateproduct",function(req,res){
 router.get("/editproduct/:id",function(req,res){
     products.find({id:req.params.id},function(err,result){
         if (err) throw err;
-        res.render("edit",{nav:[{link:"/",title:"Home"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});
+        res.render("edit",{nav:[{link:"/",title:"Home"},{link:"/prod",title:" Products"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});
     })
 })
     
@@ -111,10 +111,13 @@ router.get("/deleteproduct/:pid",function(req,res){
     })
 })
 
-router.get("/single/:id",function(req,res){
-    products.find({id:req.params.id},function(err,result){
-        res.render("product",{nav:[{link:"/",title:"Home"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});  
-      })
-        
-    })
+
+
+
+    router.get("/singleproduct/:id",function(req,res){
+        products.find({id:req.params.id},function(err,result){
+            res.render("product",{nav:[{link:"/",title:"Home"},{link:"/prod",title:" Products"},{link:"/prod/addproduct",title:"Add Product"},{link:"/prod/updateproduct",title:"Update Product"}],products:result});  
+          })
+            
+        })
 module.exports = router;
